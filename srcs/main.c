@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/03 15:41:51 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/05 16:51:34 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/05 17:05:08 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,68 +188,74 @@ void	ps_swap(int size, int *one, int *two)
 	*two = temp;
 }
 
-int		a_operations(int *a, int a_size, int size, int ans_val)
+void	a_operations(int *a, int *b, int *sizes, int ans_val)
 {
 	if (ans_val == SA)
-		ps_swap(a_size, a + (size - a_size), a + (size - a_size) + 1);
+		ps_swap(sizes[1]
+			, a + (sizes[0] - sizes[1]), a + (sizes[0] - sizes[1]) + 1);
 	else if (ans_val == RA)
-		ps_rotate(a, a_size, size);
+		ps_rotate(a, sizes[1], sizes[0]);
 	else if (ans_val == RRA)
-		ps_rev_rotate(a, a_size, size);
+		ps_rev_rotate(a, sizes[1], sizes[0]);
 	else if (ans_val == PA)
-		return (1);
-	return (0);
+	{
+		sizes[2]++;
+		b[(sizes[0] - sizes[2]) + 0] = a[(sizes[0] - sizes[1]) + 0];
+		sizes[1]--;
+	}
 }
 
-int		b_operations(int *b, int b_size, int size, int ans_val)
+void	b_operations(int *a, int *b, int *sizes, int ans_val)
 {
 	if (ans_val == SB)
-		ps_swap(b_size, b + (size - b_size), b + (size - b_size) + 1);
+		ps_swap(sizes[2]
+			, b + (sizes[0] - sizes[2]), b + (sizes[0] - sizes[2]) + 1);
 	else if (ans_val == RB)
-		ps_rotate(b, b_size, size);
+		ps_rotate(b, sizes[2], sizes[0]);
 	else if (ans_val == RRB)
-		ps_rev_rotate(b, b_size, size);
+		ps_rev_rotate(b, sizes[2], sizes[0]);
 	else if (ans_val == PB)
-		return (1);
-	return (0);
+	{
+		sizes[1]++;
+		a[(sizes[0] - sizes[1]) + 0] = b[(sizes[0] - sizes[2]) + 0];
+		sizes[2]--;
+	}
+}
+
+void	ps_dual_rotate(int *a, int *b, int *sizes)
+{
+	ps_rotate(a, sizes[1], sizes[0]);
+	ps_rotate(b, sizes[2], sizes[0]);
+}
+
+void	ps_dual_rev_rotate(int *a, int *b, int *sizes)
+{
+	ps_rev_rotate(a, sizes[1], sizes[0]);
+	ps_rev_rotate(b, sizes[2], sizes[0]);
 }
 
 int		check_answer(int *a, int size, int steps, int *answer)
 {
 	int		b[size];
-	int		a_size;
-	int		b_size;
+	int		sizes[3];
 	int		i;
 
-	a_size = size;
-	b_size = 0;
+	sizes[0] = size;
+	sizes[1] = size;
+	sizes[2] = 0;
 	i = -1;
 	while (++i < steps)
 	{
-		if (a_size > 0 && a_operations(a, a_size, size, answer[i]))
-		{
-			b_size++;
-			b[(size - b_size) + 0] = a[(size - a_size) + 0];
-			a_size--;
-		}
-		if (b_size > 0 && b_operations(b, b_size, size, answer[i]))
-		{
-			a_size++;
-			a[(size - a_size) + 0] = b[(size - b_size) + 0];
-			b_size--;
-		}
+		if (sizes[1] > 0)
+			a_operations(a, b, sizes, answer[i]);
+		if (sizes[2] > 0)
+			b_operations(a, b, sizes, answer[i]);
 		if (answer[i] == RR)
-		{
-			ps_rotate(a, a_size, size);
-			ps_rotate(b, b_size, size);
-		}
+			ps_dual_rotate(a, b, sizes);
 		else if (answer[i] == RRR)
-		{
-			ps_rev_rotate(a, a_size, size);
-			ps_rev_rotate(b, b_size, size);
-		}
+			ps_dual_rev_rotate(a, b, sizes);
 	}
-	return (check_a(a, a_size, size));
+	return (check_a(a, sizes[1], size));
 }
 
 void	leanificate_answer(int *ans, int steps)
