@@ -6,12 +6,14 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/03 15:35:45 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/03 18:54:35 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/04 18:12:18 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP
 # define PUSH_SWAP
+
+# include "stdio.h"//FIXME
 
 # include "stdlib.h"
 # include "unistd.h"
