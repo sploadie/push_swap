@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/03 15:41:51 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/05 16:21:38 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/05 16:51:34 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,13 +177,41 @@ void	ps_rev_rotate(int *a, int a_size, int size)
 	a[(size - a_size) + 0] = temp;
 }
 
-void	int_ptr_swap(int *one, int *two)
+void	ps_swap(int size, int *one, int *two)
 {
 	int	temp;
 
+	if (size < 2)
+		return ;
 	temp = *one;
 	*one = *two;
 	*two = temp;
+}
+
+int		a_operations(int *a, int a_size, int size, int ans_val)
+{
+	if (ans_val == SA)
+		ps_swap(a_size, a + (size - a_size), a + (size - a_size) + 1);
+	else if (ans_val == RA)
+		ps_rotate(a, a_size, size);
+	else if (ans_val == RRA)
+		ps_rev_rotate(a, a_size, size);
+	else if (ans_val == PA)
+		return (1);
+	return (0);
+}
+
+int		b_operations(int *b, int b_size, int size, int ans_val)
+{
+	if (ans_val == SB)
+		ps_swap(b_size, b + (size - b_size), b + (size - b_size) + 1);
+	else if (ans_val == RB)
+		ps_rotate(b, b_size, size);
+	else if (ans_val == RRB)
+		ps_rev_rotate(b, b_size, size);
+	else if (ans_val == PB)
+		return (1);
+	return (0);
 }
 
 int		check_answer(int *a, int size, int steps, int *answer)
@@ -198,47 +226,23 @@ int		check_answer(int *a, int size, int steps, int *answer)
 	i = -1;
 	while (++i < steps)
 	{
-		if (answer[i] == SA)
+		if (a_size > 0 && a_operations(a, a_size, size, answer[i]))
 		{
-			if (a_size < 2)
-				continue ;
-			int_ptr_swap(a + (size - a_size), a + (size - a_size) + 1);
-		}
-		else if (answer[i] == SB)
-		{
-			if (b_size < 2)
-				continue ;
-			int_ptr_swap(b + (size - b_size), b + (size - b_size) + 1);
-		}
-		else if (answer[i] == PA)
-		{
-			if (a_size < 1)
-				continue ;
 			b_size++;
 			b[(size - b_size) + 0] = a[(size - a_size) + 0];
 			a_size--;
 		}
-		else if (answer[i] == PB)
+		if (b_size > 0 && b_operations(b, b_size, size, answer[i]))
 		{
-			if (b_size < 1)
-				continue ;
 			a_size++;
 			a[(size - a_size) + 0] = b[(size - b_size) + 0];
 			b_size--;
 		}
-		else if (answer[i] == RA)
-			ps_rotate(a, a_size, size);
-		else if (answer[i] == RB)
-			ps_rotate(b, b_size, size);
-		else if (answer[i] == RR)
+		if (answer[i] == RR)
 		{
 			ps_rotate(a, a_size, size);
 			ps_rotate(b, b_size, size);
 		}
-		else if (answer[i] == RRA)
-			ps_rev_rotate(a, a_size, size);
-		else if (answer[i] == RRB)
-			ps_rev_rotate(b, b_size, size);
 		else if (answer[i] == RRR)
 		{
 			ps_rev_rotate(a, a_size, size);
