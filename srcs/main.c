@@ -6,13 +6,13 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/03 15:41:51 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/05 14:56:24 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/05 16:21:38 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	isunique(int *array, int size)
+void	get_original(int *original, int size, char **argv)
 {
 	int		i;
 	int		j;
@@ -20,10 +20,18 @@ void	isunique(int *array, int size)
 	i = 0;
 	while (i < size)
 	{
+		if (!isintstring(argv[i]))
+			ps_error();
+		original[i] = ft_atoi(argv[i]);
+		i++;
+	}
+	i = 0;
+	while (i < size)
+	{
 		j = i + 1;
 		while (j < size)
 		{
-			if (array[i] == array[j])
+			if (original[i] == original[j])
 				ps_error();
 			j++;
 		}
@@ -31,58 +39,32 @@ void	isunique(int *array, int size)
 	}
 }
 
-void	get_original(int *original, int argc, char **argv)
-{
-	int		i;
-
-	i = 0;
-	while (i < argc)
-	{
-		if (!isintstring(argv[i]))
-			ps_error();
-		original[i] = ft_atoi(argv[i]);
-		i++;
-	}
-	isunique(original, argc);
-}
-
 void	print_answer(int *answer, int steps)
 {
-	int	i;
-
-	i = 0;
-	while (i < steps)
+	while (steps--)
 	{
-		if (answer[i] == SA)
+		if (*answer == SA)
 			ft_putstr("sa");
-		else if (answer[i] == SB)
+		else if (*answer == SB)
 			ft_putstr("sb");
-		else if (answer[i] == PA)
+		else if (*answer == PA)
 			ft_putstr("pa");
-		else if (answer[i] == PB)
+		else if (*answer == PB)
 			ft_putstr("pb");
-		else if (answer[i] == RA)
+		else if (*answer == RA)
 			ft_putstr("ra");
-		else if (answer[i] == RB)
+		else if (*answer == RB)
 			ft_putstr("rb");
-		else if (answer[i] == RR)
+		else if (*answer == RR)
 			ft_putstr("rr");
-		else if (answer[i] == RRA)
+		else if (*answer == RRA)
 			ft_putstr("rra");
-		else if (answer[i] == RRB)
+		else if (*answer == RRB)
 			ft_putstr("rrb");
-		else if (answer[i] == RRR)
+		else if (*answer == RRR)
 			ft_putstr("rrr");
-		else
-		{
-			// ft_putstr("Error?!\n");//FIXME
-			// exit(0);//FIXME
-		}
-		i++;
-		if (i == steps)
-			write(1, "\n", 1);
-		else
-			write(1, " ", 1);
+		answer++;
+		!steps ? write(1, "\n", 1) : write(1, " ", 1);
 	}
 }
 
@@ -114,24 +96,23 @@ void	print_a(int *a, int a_size, int size)
 {
 	int		i;
 
+	write(1, "[", 1);
 	i = 0;
 	while (i < a_size)
 	{
 		ft_putnbr(a[(size - a_size) + i]);
-		ft_putstr(", ");
 		i++;
+		i == a_size ? write(1, "\n", 1) : write(1, ", ", 2);
 	}
-	write(1, "\n", 1);
+	write(1, "]\n", 2);
 }
 
 int		check_a(int *a, int a_size, int size)
 {
 	int		i;
 
-	// ft_putstr("check_a: ");//FIXME
 	if (a_size != size)
 	{
-		// ft_putstr("fail\n");//FIXME
 		return (0);
 	}
 	i = 0;
@@ -139,12 +120,10 @@ int		check_a(int *a, int a_size, int size)
 	{
 		if (a[i] != i)
 		{
-			// ft_putstr("fail\n");//FIXME
 			return (0);
 		}
 		i++;
 	}
-	// ft_putstr("success\n");//FIXME
 	return (1);
 }
 
@@ -152,7 +131,6 @@ void	duplicate_a(int *dup_a, int *a, int size)
 {
 	int		i;
 
-	// ft_putstr("duplicate_a\n");//FIXME
 	i = 0;
 	while (i < size)
 	{
@@ -199,151 +177,121 @@ void	ps_rev_rotate(int *a, int a_size, int size)
 	a[(size - a_size) + 0] = temp;
 }
 
+void	int_ptr_swap(int *one, int *two)
+{
+	int	temp;
+
+	temp = *one;
+	*one = *two;
+	*two = temp;
+}
+
 int		check_answer(int *a, int size, int steps, int *answer)
 {
 	int		b[size];
 	int		a_size;
 	int		b_size;
 	int		i;
-	int		temp;
 
-	// ft_putstr("check_answer\n");//FIXME
 	a_size = size;
 	b_size = 0;
-	i = 0;
-	while (i < steps)
+	i = -1;
+	while (++i < steps)
 	{
 		if (answer[i] == SA)
 		{
-			if (a_size >= 2)
-			{
-				temp = a[(size - a_size) + 0];
-				a[(size - a_size) + 0] = a[(size - a_size) + 1];
-				a[(size - a_size) + 1] = temp;
-			}
+			if (a_size < 2)
+				continue ;
+			int_ptr_swap(a + (size - a_size), a + (size - a_size) + 1);
 		}
 		else if (answer[i] == SB)
 		{
-			if (b_size >= 2)
-			{
-				temp = b[(size - b_size) + 0];
-				b[(size - b_size) + 0] = b[(size - b_size) + 1];
-				b[(size - b_size) + 1] = temp;
-			}
+			if (b_size < 2)
+				continue ;
+			int_ptr_swap(b + (size - b_size), b + (size - b_size) + 1);
 		}
 		else if (answer[i] == PA)
 		{
-			if (a_size >= 1)
-			{
-				b_size++;
-				b[(size - b_size) + 0] = a[(size - a_size) + 0];
-				a_size--;
-			}
+			if (a_size < 1)
+				continue ;
+			b_size++;
+			b[(size - b_size) + 0] = a[(size - a_size) + 0];
+			a_size--;
 		}
 		else if (answer[i] == PB)
 		{
-			if (b_size >= 1)
-			{
-				a_size++;
-				a[(size - a_size) + 0] = b[(size - b_size) + 0];
-				b_size--;
-			}
+			if (b_size < 1)
+				continue ;
+			a_size++;
+			a[(size - a_size) + 0] = b[(size - b_size) + 0];
+			b_size--;
 		}
 		else if (answer[i] == RA)
-		{
 			ps_rotate(a, a_size, size);
-		}
 		else if (answer[i] == RB)
-		{
 			ps_rotate(b, b_size, size);
-		}
 		else if (answer[i] == RR)
 		{
 			ps_rotate(a, a_size, size);
 			ps_rotate(b, b_size, size);
 		}
 		else if (answer[i] == RRA)
-		{
 			ps_rev_rotate(a, a_size, size);
-		}
 		else if (answer[i] == RRB)
-		{
 			ps_rev_rotate(b, b_size, size);
-		}
 		else if (answer[i] == RRR)
 		{
 			ps_rev_rotate(a, a_size, size);
 			ps_rev_rotate(b, b_size, size);
 		}
-		else
+	}
+	return (check_a(a, a_size, size));
+}
+
+void	leanificate_answer(int *ans, int steps)
+{
+	int		i;
+
+	i = 0;
+	while (i < steps - 1)
+	{
+		if ((ans[i] == SA || ans[i] == SB) && (ans[i] == ans[i + 1]))
+			ans[i + 1] += 1;
+		if ((ans[i] >= RA && ans[i] <= RR) && ans[i + 1] >= RRA)
 		{
-			// ft_putstr("Error?!\n");//FIXME
-			// exit(0);//FIXME
+			ans[i] += 1;
+			ans[i + 1] = SA;
 		}
+		if (ans[i] >= RRA && (ans[i + 1] >= RA && ans[i + 1] <= RR))
+			ans[i + 1] = RRA;
 		i++;
 	}
-	// ft_putstr("?: ");//FIXME
-	// print_answer(answer, steps);//FIXME
-	// ft_putstr("a: ");//FIXME
-	// print_a(a, a_size, size);//FIXME
-	// ft_putstr("b: ");//FIXME
-	// print_a(b, b_size, size);//FIXME
-	// sleep(1);//FIXME
-	return (check_a(a, a_size, size));
 }
 
 int		*compute_answer(int *a, int size, int steps)
 {
 	int			i;
-	int			answer[steps];
+	int			ans[steps];
 	int			dup_a[size];
-	int			answer_count;//FIXME
+	int			ans_count;
 
-	answer_count = 0;//FIXME
-	// ft_putstr("compute_answer\n");//FIXME
-	ft_bzero(answer, steps * sizeof(int));
-	answer[steps - 1] = -1; //SETUP
-	while (answer[0] < RRR)
+	ans_count = 0;
+	ft_bzero(ans, steps * sizeof(int));
+	ans[steps - 1] = -1;
+	while (ans[0] < RRR)
 	{
-		//DATA MINING FIXME
-		// write(1, "\33[2K\r", 5);//FIXME
-		// write(1, "\r", 1);//FIXME
-		// ft_putnbr(++answer_count);//FIXME
-		printf("\r%d", ++answer_count);
-		//DATA MINING FIXME
-		i = steps - 1;
-		answer[steps - 1] += 1;
-		while (i != 0 && answer[i] > RRR)
+		write(1, "\r", 1);
+		ft_putnbr(++ans_count);
+		ans[steps - 1] += 1;
+		i = steps;
+		while (--i, i != 0 && ans[i] > RRR)
 		{
-			answer[i] = SA;
-			answer[i - 1] += 1;
-			i--;
+			ans[i] = SA;
+			ans[i - 1] += 1;
 		}
-		//SHORTCUTS
-		i = 0;
-		while (i < steps - 1)
-		{
-			if ((answer[i] == SA || answer[i] == SB) && (answer[i] == answer[i + 1]))
-			{
-				answer[i + 1] += 1;
-			}
-			if ((answer[i] >= RA && answer[i] <= RR) && answer[i + 1] >= RRA)
-			{
-				answer[i] += 1;
-				answer[i + 1] = SA;
-			}
-			if (answer[i] >= RRA && (answer[i + 1] >= RA && answer[i + 1] <= RR))
-			{
-				answer[i + 1] = RRA;
-			}
-			i++;
-		}
-		//SHORTCUTS END
-		duplicate_a(dup_a, a, size);
-		if (check_answer(dup_a, size, steps, answer))
-		{
-			return (ft_memdup(answer, steps * sizeof(int)));
-		}
+		leanificate_answer(ans, steps);
+		if (duplicate_a(dup_a, a, size), check_answer(dup_a, size, steps, ans))
+			return (ft_memdup(ans, steps * sizeof(int)));
 	}
 	return (NULL);
 }
@@ -358,35 +306,15 @@ int		main(int argc, char **argv)
 	if (argc - 1 < 1)
 		ps_error();
 	if (argc - 1 == 1)
-	{
-		// ft_putstr("Done.\n");//FIXME
 		return (0);
-	}
-	argc--;
-	argv++;
-	// ft_putstr("get_original\n");//FIXME
-	get_original(original, argc, argv);
-	// ft_putstr("generate_a\n");//FIXME
+	get_original(original, --argc, ++argv);
 	generate_a(original, a, argc);
-	// print_a(a, argc, argc);//FIXME
 	if (check_a(a, argc, argc))
-	{
-		// ft_putstr("Done.\n");//FIXME
 		return (0);
-	}
-	// ft_putstr("Loop Start:\n");//FIXME
-	ft_putstr("Operations: 1\n");//FIXME
-	i = 1;
-	while (!(answer = compute_answer(a, argc, i)))
-	{
-		i++;
-		write(1, "\n", 1);//FIXME
-		ft_putstr("Operations: ");//FIXME
-		ft_putnbr(i);//FIXME
-		write(1, "\n", 1);//FIXME
-	}
-	// ft_putstr("Loop End\n");//FIXME
-	write(1, "\n", 1);//FIXME
+	i = 0;
+	while (!(answer = compute_answer(a, argc, ++i)))
+		write(1, "\n", 1);
+	write(1, "\n", 1);
 	print_answer(answer, i);
 	return (0);
 }
