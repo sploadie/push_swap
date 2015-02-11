@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/09 14:43:28 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/09 15:27:54 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/11 11:46:18 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	leanificate_answer(int *ans, int steps)
 	i = 0;
 	while (i < steps - 1)
 	{
+		if (ans[i] == SS && ans[i + 1] <= SS)
+			ans[i + 1] = SS + 1;
 		if ((ans[i] == SA || ans[i] == SB) && (ans[i] == ans[i + 1]))
 			ans[i + 1] += 1;
 		if ((ans[i] >= RA && ans[i] <= RR) && ans[i + 1] >= RRA)
@@ -68,9 +70,11 @@ int		*compute_answer(int *a, int size, int steps)
 	ans[steps - 1] = -1;
 	while (ans[0] < RRR)
 	{
-		write(1, "\r", 1);
 		if (deal_options("v", 0))
+		{
+			write(1, "\r", 1);
 			ft_putnbr(++ans_count);
+		}
 		ans[steps - 1] += 1;
 		i = steps;
 		while (--i, i != 0 && ans[i] > RRR)

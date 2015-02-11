@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/03 15:35:45 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/09 15:18:59 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/11 11:40:02 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@
 
 # define SA 0
 # define SB 1
-# define PA 2
-# define PB 3
-# define RA 4
-# define RB 5
-# define RR 6
-# define RRA 7
-# define RRB 8
-# define RRR 9
+# define SS 2
+# define PA 3
+# define PB 4
+# define RA 5
+# define RB 6
+# define RR 7
+# define RRA 8
+# define RRB 9
+# define RRR 10
 # define ALL_OPTIONS "v"
 
 void			ps_error(void);

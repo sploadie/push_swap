@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/09 14:42:59 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/09 14:46:26 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/11 11:41:48 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	a_operations(int *a, int *b, int *sizes, int ans_val)
 {
-	if (ans_val == SA)
+	if (ans_val == SA || ans_val == SS)
 		ps_swap(sizes[1]
 			, a + (sizes[0] - sizes[1]), a + (sizes[0] - sizes[1]) + 1);
 	else if (ans_val == RA)
@@ -31,7 +31,7 @@ void	a_operations(int *a, int *b, int *sizes, int ans_val)
 
 void	b_operations(int *a, int *b, int *sizes, int ans_val)
 {
-	if (ans_val == SB)
+	if (ans_val == SB || ans_val == SS)
 		ps_swap(sizes[2]
 			, b + (sizes[0] - sizes[2]), b + (sizes[0] - sizes[2]) + 1);
 	else if (ans_val == RB)
