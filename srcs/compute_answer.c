@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/09 14:43:28 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/11 14:20:27 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/11 14:27:46 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 static void	putcounter(unsigned long n)
 {
-	char	txtspc[20];
-	char	*ntxt;
+	char	txtspc[21];
+	int		ntxt;
 
-	ntxt = &txtspc[10];
-	*ntxt = '\0';
+	ntxt = 20;
+	txtspc[ntxt] = '\0';
 	while (n > 0)
 	{
-		*(--ntxt) = 48 + (n % 10);
+		txtspc[--ntxt] = '0' + (n % 10);
 		n = n / 10;
 	}
-	ft_putstr(ntxt);
+	write(1, txtspc + ntxt, 20 - ntxt);
 }
 
 static int	check_answer(int *a, int size, int steps, int *answer)
