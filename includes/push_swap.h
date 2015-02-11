@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/03 15:35:45 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/11 11:40:02 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/11 14:20:46 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ void			a_operations(int *a, int *b, int *sizes, int ans_val);
 void			b_operations(int *a, int *b, int *sizes, int ans_val);
 void			ps_dual_rotate(int *a, int *b, int *sizes);
 void			ps_dual_rev_rotate(int *a, int *b, int *sizes);
-int				check_answer(int *a, int size, int steps, int *answer);
-void			leanificate_answer(int *ans, int steps);
 int				*compute_answer(int *a, int size, int steps);
 int				deal_options(char *str, int input);
 

@@ -6,13 +6,28 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/09 14:43:28 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/11 11:46:18 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/11 14:20:27 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int		check_answer(int *a, int size, int steps, int *answer)
+static void	putcounter(unsigned long n)
+{
+	char	txtspc[20];
+	char	*ntxt;
+
+	ntxt = &txtspc[10];
+	*ntxt = '\0';
+	while (n > 0)
+	{
+		*(--ntxt) = 48 + (n % 10);
+		n = n / 10;
+	}
+	ft_putstr(ntxt);
+}
+
+static int	check_answer(int *a, int size, int steps, int *answer)
 {
 	int		b[size];
 	int		sizes[3];
@@ -36,7 +51,7 @@ int		check_answer(int *a, int size, int steps, int *answer)
 	return (check_a(a, sizes[1], size));
 }
 
-void	leanificate_answer(int *ans, int steps)
+static void	leanificate_answer(int *ans, int steps)
 {
 	int		i;
 
@@ -58,12 +73,12 @@ void	leanificate_answer(int *ans, int steps)
 	}
 }
 
-int		*compute_answer(int *a, int size, int steps)
+int			*compute_answer(int *a, int size, int steps)
 {
-	int			i;
-	int			ans[steps];
-	int			dup_a[size];
-	int			ans_count;
+	int				i;
+	int				ans[steps];
+	int				dup_a[size];
+	unsigned long	ans_count;
 
 	ans_count = 0;
 	ft_bzero(ans, steps * sizeof(int));
@@ -73,7 +88,7 @@ int		*compute_answer(int *a, int size, int steps)
 		if (deal_options("v", 0))
 		{
 			write(1, "\r", 1);
-			ft_putnbr(++ans_count);
+			putcounter(++ans_count);
 		}
 		ans[steps - 1] += 1;
 		i = steps;
