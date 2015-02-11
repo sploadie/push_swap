@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/03 15:41:51 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/09 15:28:47 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/11 14:37:10 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,19 @@ int		main(int argc, char **argv)
 	generate_a(original, a, argc);
 	if (check_a(a, argc, argc))
 		return (0);
-	i = 0;
-	while (!(answer = compute_answer(a, argc, ++i)))
-		if (deal_options("v", 0))
-			write(1, "\n", 1);
+	i = 1;
 	if (deal_options("v", 0))
+	{
+		while (!(answer = verbose_compute_answer(a, argc, i++)))
+			write(1, "\n", 1);
+		i--;
 		write(1, "\n", 1);
+	}
+	else
+	{
+		while (!(answer = compute_answer(a, argc, i)))
+			i++;
+	}
 	print_answer(answer, i);
 	return (0);
 }

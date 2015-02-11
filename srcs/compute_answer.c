@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/09 14:43:28 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/11 14:27:46 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/11 15:42:07 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,18 @@
 
 static void	putcounter(unsigned long n)
 {
-	char	txtspc[21];
+	char	txtspc[22];
 	int		ntxt;
 
-	ntxt = 20;
+	ntxt = 21;
 	txtspc[ntxt] = '\0';
 	while (n > 0)
 	{
 		txtspc[--ntxt] = '0' + (n % 10);
 		n = n / 10;
 	}
-	write(1, txtspc + ntxt, 20 - ntxt);
+	txtspc[--ntxt] = '\r';
+	write(1, txtspc + ntxt, 21 - ntxt);
 }
 
 static int	check_answer(int *a, int size, int steps, int *answer)
@@ -78,6 +79,30 @@ int			*compute_answer(int *a, int size, int steps)
 	int				i;
 	int				ans[steps];
 	int				dup_a[size];
+
+	ft_bzero(ans, steps * sizeof(int));
+	ans[steps - 1] = -1;
+	while (ans[0] < RRR)
+	{
+		ans[steps - 1] += 1;
+		i = steps;
+		while (--i, i != 0 && ans[i] > RRR)
+		{
+			ans[i] = SA;
+			ans[i - 1] += 1;
+		}
+		leanificate_answer(ans, steps);
+		if (duplicate_a(dup_a, a, size), check_answer(dup_a, size, steps, ans))
+			return (ft_memdup(ans, steps * sizeof(int)));
+	}
+	return (NULL);
+}
+
+int			*verbose_compute_answer(int *a, int size, int steps)
+{
+	int				i;
+	int				ans[steps];
+	int				dup_a[size];
 	unsigned long	ans_count;
 
 	ans_count = 0;
@@ -85,11 +110,7 @@ int			*compute_answer(int *a, int size, int steps)
 	ans[steps - 1] = -1;
 	while (ans[0] < RRR)
 	{
-		if (deal_options("v", 0))
-		{
-			write(1, "\r", 1);
-			putcounter(++ans_count);
-		}
+		putcounter(++ans_count);
 		ans[steps - 1] += 1;
 		i = steps;
 		while (--i, i != 0 && ans[i] > RRR)
