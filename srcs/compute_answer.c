@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/09 14:43:28 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/11 17:25:51 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/12 10:26:04 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,18 @@ static int	check_answer(int *a, int size, int steps, int *answer)
 	return (check_a(a, sizes[1], size));
 }
 
+static void	vamp_count(int *one, int *two)
+{
+	(*one)--;
+	(*two)++;
+}
+
+static void	skip_reset(int *answer)
+{
+	answer[0]++;
+	answer[1] = SA;
+}
+
 static int	leanificate_answer(int *ans, int steps, int a_size)
 {
 	int		i;
@@ -69,64 +81,34 @@ static int	leanificate_answer(int *ans, int steps, int a_size)
 			ans[i + 1] += 1;
 		if (ans[i] == PB && ans[i + 1] == PA)
 			ans[i + 1] += 1;
-		// (void)a_size;
-		if (ans[i] == PA)
-		{
-			if (a_size < 1)
-			{
-				ans[i]++;
-				ans[i + 1] = SA;
-				continue ;
-			}
-			else
-			{
-				a_size--;
-				b_size++;
-			}
-		}
-		if (ans[i] == PB)
-		{
-			if (b_size < 1)
-			{
-				ans[i]++;
-				ans[i + 1] = SA;
-				continue ;
-			}
-			else
-			{
-				b_size--;
-				a_size++;
-			}
-		}
 		if ((ans[i] >= RA && ans[i] <= RR) && ans[i + 1] >= RRA)
-		{
-			ans[i] += 1;
-			ans[i + 1] = SA;
-		}
+			skip_reset(ans + i);
 		if (ans[i] >= RRA && (ans[i + 1] >= RA && ans[i + 1] <= RR))
 			ans[i + 1] = RRA;
+		if (ans[i] == PA && a_size < 1)
+		{
+			skip_reset(ans + i);
+			continue ;
+		}
+		else if (ans[i] == PA)
+			vamp_count(&a_size, &b_size);
+		if (ans[i] == PB && b_size < 1)
+		{
+			skip_reset(ans + i);
+			continue ;
+		}
+		else if (ans[i] == PB)
+			vamp_count(&b_size, &a_size);
 		i++;
 	}
-	if (ans[i] == PA)
-	{
-		if (a_size < 1)
-			ans[i]++;
-		else
-		{
-			a_size--;
-			b_size++;
-		}
-	}
-	if (ans[i] == PB)
-	{
-		if (b_size < 1)
-			ans[i]++;
-		else
-		{
-			b_size--;
-			a_size++;
-		}
-	}
+	if (ans[i] == PA && a_size < 1)
+		ans[i]++;
+	else if (ans[i] == PA)
+		vamp_count(&a_size, &b_size);
+	if (ans[i] == PB && b_size < 1)
+		ans[i]++;
+	else if (ans[i] == PB)
+		vamp_count(&b_size, &a_size);
 	if (b_size > 0)
 		return (0);
 	return (1);
