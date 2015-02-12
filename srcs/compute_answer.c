@@ -6,62 +6,29 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/09 14:43:28 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/12 10:26:04 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/12 15:21:08 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static void	putcounter(unsigned long n)
-{
-	char	txtspc[22];
-	int		ntxt;
-
-	ntxt = 21;
-	txtspc[ntxt] = '\0';
-	while (n > 0)
-	{
-		txtspc[--ntxt] = '0' + (n % 10);
-		n = n / 10;
-	}
-	txtspc[--ntxt] = '\r';
-	write(1, txtspc + ntxt, 21 - ntxt);
-}
-
-static int	check_answer(int *a, int size, int steps, int *answer)
-{
-	int		b[size];
-	int		sizes[3];
-	int		i;
-
-	sizes[0] = size;
-	sizes[1] = size;
-	sizes[2] = 0;
-	i = -1;
-	while (++i < steps)
-	{
-		if (sizes[1] > 0)
-			a_operations(a, b, sizes, answer[i]);
-		if (sizes[2] > 0)
-			b_operations(a, b, sizes, answer[i]);
-		if (answer[i] == RR)
-			ps_dual_rotate(a, b, sizes);
-		else if (answer[i] == RRR)
-			ps_dual_rev_rotate(a, b, sizes);
-	}
-	return (check_a(a, sizes[1], size));
-}
-
-static void	vamp_count(int *one, int *two)
-{
-	(*one)--;
-	(*two)++;
-}
-
 static void	skip_reset(int *answer)
 {
 	answer[0]++;
 	answer[1] = SA;
+}
+
+static void	leanificate_beginning(int *ans, int i)
+{
+	(ans[i] == SS && ans[i + 1] <= SS) ? ans[i + 1] = SS + 1 : (void)ans;
+	if ((ans[i] == SA || ans[i] == SB) && (ans[i] == ans[i + 1]))
+		ans[i + 1] += 1;
+	(ans[i] == PA && ans[i + 1] == PB) ? ans[i + 1] += 1 : (void)ans;
+	(ans[i] == PB && ans[i + 1] == PA) ? ans[i + 1] += 1 : (void)ans;
+	if ((ans[i] >= RA && ans[i] <= RR) && ans[i + 1] >= RRA)
+		skip_reset(ans + i);
+	if (ans[i] >= RRA && (ans[i + 1] >= RA && ans[i + 1] <= RR))
+		ans[i + 1] = RRA;
 }
 
 static int	leanificate_answer(int *ans, int steps, int a_size)
@@ -73,42 +40,20 @@ static int	leanificate_answer(int *ans, int steps, int a_size)
 	b_size = 0;
 	while (i < steps - 1)
 	{
-		if (ans[i] == SS && ans[i + 1] <= SS)
-			ans[i + 1] = SS + 1;
-		if ((ans[i] == SA || ans[i] == SB) && (ans[i] == ans[i + 1]))
-			ans[i + 1] += 1;
-		if (ans[i] == PA && ans[i + 1] == PB)
-			ans[i + 1] += 1;
-		if (ans[i] == PB && ans[i + 1] == PA)
-			ans[i + 1] += 1;
-		if ((ans[i] >= RA && ans[i] <= RR) && ans[i + 1] >= RRA)
-			skip_reset(ans + i);
-		if (ans[i] >= RRA && (ans[i + 1] >= RA && ans[i + 1] <= RR))
-			ans[i + 1] = RRA;
-		if (ans[i] == PA && a_size < 1)
+		leanificate_beginning(ans, i);
+		if ((ans[i] == PA && a_size < 1) || (ans[i] == PB && b_size < 1))
 		{
 			skip_reset(ans + i);
 			continue ;
 		}
-		else if (ans[i] == PA)
-			vamp_count(&a_size, &b_size);
-		if (ans[i] == PB && b_size < 1)
-		{
-			skip_reset(ans + i);
-			continue ;
-		}
-		else if (ans[i] == PB)
-			vamp_count(&b_size, &a_size);
+		(ans[i] == PA) ? vamp_count(&a_size, &b_size) : (void)ans;
+		(ans[i] == PB) ? vamp_count(&b_size, &a_size) : (void)ans;
 		i++;
 	}
-	if (ans[i] == PA && a_size < 1)
+	if ((ans[i] == PA && a_size < 1) || (ans[i] == PB && b_size < 1))
 		ans[i]++;
-	else if (ans[i] == PA)
-		vamp_count(&a_size, &b_size);
-	if (ans[i] == PB && b_size < 1)
-		ans[i]++;
-	else if (ans[i] == PB)
-		vamp_count(&b_size, &a_size);
+	(ans[i] == PA) ? vamp_count(&a_size, &b_size) : (void)ans;
+	(ans[i] == PB) ? vamp_count(&b_size, &a_size) : (void)ans;
 	if (b_size > 0)
 		return (0);
 	return (1);

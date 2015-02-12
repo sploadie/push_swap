@@ -6,7 +6,7 @@
 #    By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/20 16:35:37 by tgauvrit          #+#    #+#              #
-#    Updated: 2015/02/09 15:43:25 by tgauvrit         ###   ########.fr        #
+#    Updated: 2015/02/12 15:21:25 by tgauvrit         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,9 @@ SRC_COMPILED =	main.o \
 				ps_error.o \
 				ps_rotate.o \
 				ps_swap.o \
+				vamp_count.o \
+				putcounter.o \
+				check_answer.o \
 				deal_options.o
 
 COMPILED =		$(SRC_COMPILED)

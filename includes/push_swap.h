@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/03 15:35:45 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/11 14:37:28 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/12 15:20:22 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,8 @@ void			ps_dual_rev_rotate(int *a, int *b, int *sizes);
 int				*compute_answer(int *a, int size, int steps);
 int				*verbose_compute_answer(int *a, int size, int steps);
 int				deal_options(char *str, int input);
+void			vamp_count(int *one, int *two);
+void			putcounter(unsigned long n);
+int				check_answer(int *a, int size, int steps, int *answer);
 
 #endif
