@@ -31,8 +31,9 @@ def get_min_max(num_args):
     for perm in permutations:
         cmd = './push_swap ' + convert_to_string(perm);
         exitcode, out, err = get_exitcode_stdout_stderr(cmd)
-        length = out.count(' ') + 1
-        print('calling \"' + cmd + '" and getting length = ' + str(length - 1) + ' ("' + out[:-1] + '")')
+        cmd_length = cmd.count(' ')
+        length = out.count(' ')
+        print('stack_size=' + str(cmd_length) + ' solution_size=' + str(length) + ' ' + out[:-1])
         if length > max_solution_length:
             max_solution_length = length
     return max_solution_length
