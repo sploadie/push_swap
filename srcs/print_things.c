@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/09 14:41:45 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/11 11:48:26 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2015/02/18 11:37:51 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	print_answer(int *answer, int steps)
 		(*answer == SA) ? ft_putstr("sa") : (void)SA;
 		(*answer == SB) ? ft_putstr("sb") : (void)SB;
 		(*answer == SS) ? ft_putstr("ss") : (void)SS;
-		(*answer == PA) ? ft_putstr("pa") : (void)PA;
-		(*answer == PB) ? ft_putstr("pb") : (void)PB;
+		(*answer == PA) ? ft_putstr("pb") : (void)PA;
+		(*answer == PB) ? ft_putstr("pa") : (void)PB;
 		(*answer == RA) ? ft_putstr("ra") : (void)RA;
 		(*answer == RB) ? ft_putstr("rb") : (void)RB;
 		(*answer == RR) ? ft_putstr("rr") : (void)RR;
