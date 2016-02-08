@@ -70,15 +70,17 @@ int			*compute_answer(int *a, int size, int steps)
 	while (ans[0] < RRR)
 	{
 		ans[steps - 1] += 1;
-		i = steps;
-		while (--i, i != 0 && ans[i] > RRR)
+		i = steps - 1;
+		while (i != 0 && ans[i] > RRR)
 		{
 			ans[i] = SA;
 			ans[i - 1] += 1;
+			--i;
 		}
 		if (!leanificate_answer(ans, steps, size))
 			continue ;
-		if (duplicate_a(dup_a, a, size), check_answer(dup_a, size, steps, ans))
+		duplicate_a(dup_a, a, size);
+		if (check_answer(dup_a, size, steps, ans))
 			return (ft_memdup(ans, steps * sizeof(int)));
 	}
 	return (NULL);
@@ -97,16 +99,17 @@ int			*verbose_compute_answer(int *a, int size, int steps)
 	while (ans[0] < RRR)
 	{
 		ans[steps - 1] += 1;
-		i = steps;
-		while (--i, i != 0 && ans[i] > RRR)
+		i = steps - 1;
+		while (i != 0 && ans[i] > RRR)
 		{
 			ans[i] = SA;
-			ans[i - 1] += 1;
+			ans[i-- - 1] += 1;
 		}
 		if (!leanificate_answer(ans, steps, size))
 			continue ;
 		putcounter(++ans_count);
-		if (duplicate_a(dup_a, a, size), check_answer(dup_a, size, steps, ans))
+		duplicate_a(dup_a, a, size);
+		if (check_answer(dup_a, size, steps, ans))
 			return (ft_memdup(ans, steps * sizeof(int)));
 	}
 	return (NULL);

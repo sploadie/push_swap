@@ -47,5 +47,6 @@ int			main(int argc, char **argv)
 	generate_a(original, a, argc);
 	if (check_a(a, argc, argc))
 		return (0);
+	answer = NULL;
 	return (low_main(a, argc, answer));
 }

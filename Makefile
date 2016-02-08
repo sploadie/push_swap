@@ -12,7 +12,7 @@
 
 NAME =			push_swap
 
-CC =			gcc
+CC =			clang
 
 FLAGS =			-Wall -Werror -Wextra -O3
 
