@@ -6,7 +6,7 @@
 /*   By: tgauvrit <tgauvrit@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/02/03 16:16:16 by tgauvrit          #+#    #+#             */
-/*   Updated: 2015/02/05 15:15:00 by tgauvrit         ###   ########.fr       */
+/*   Updated: 2016/04/01 18:03:53 by tgauvrit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		isintstring(char *str)
 {
 	if (str[0] == '-' && str[1] != '\0')
 		str++;
-	while (!str != '\0')
+	while (*str != '\0')
 	{
 		if (!ft_isdigit(*str))
 			return (0);
